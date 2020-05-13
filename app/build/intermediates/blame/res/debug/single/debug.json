@@ -138,5 +138,9 @@
     {
         "merged": "C:\\Users\\mano1\\Documents\\Programming\\Android\\mvvmbasicsresocoder\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi_ic_mode_edit_black_24dp.png.flat",
         "source": "C:\\Users\\mano1\\Documents\\Programming\\Android\\mvvmbasicsresocoder\\app\\build\\generated\\res\\pngs\\debug\\drawable-ldpi\\ic_mode_edit_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\mano1\\Documents\\Programming\\Android\\mvvmbasicsresocoder\\app\\build\\intermediates\\res\\merged\\debug\\drawable_rounded_edittext.xml.flat",
+        "source": "C:\\Users\\mano1\\Documents\\Programming\\Android\\mvvmbasicsresocoder\\app\\src\\main\\res\\drawable\\rounded_edittext.xml"
     }
 ]

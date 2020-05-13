@@ -2,6 +2,7 @@ package com.example.mvvmbasicsresocoder.ui.quotes
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.mvvmbasicsresocoder.R
@@ -30,11 +31,23 @@ class QuoteActivity : AppCompatActivity() {
             textView_quotes.text = stringBuilder.toString()
         })
 
+
         button_add_quote.setOnClickListener {
             val quote = Quote(editText_quote.text.toString(), editText_author.text.toString())
             viewModel.addQuote(quote)
             editText_quote.setText("")
             editText_author.setText("")
+        }
+    }
+
+    private fun validateEditText(editText: EditText, errorMessage: String): Boolean{
+        var textInput: String = editText.text.toString()
+        if(textInput.isEmpty()){
+            editText.setError(errorMessage)
+            return false
+        }else {
+            editText.setError(null);
+            return true
         }
     }
 
