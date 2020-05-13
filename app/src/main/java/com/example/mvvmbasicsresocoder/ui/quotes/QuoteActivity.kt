@@ -19,13 +19,13 @@ class QuoteActivity : AppCompatActivity() {
         initializeUI()
     }
 
-    private fun initializeUI(){
+    private fun initializeUI() {
         val factory = InjectorUtils.provideQuotesViewModelFactory()
         val viewModel = ViewModelProvider(this, factory).get(QuotesViewModel::class.java)
 
         viewModel.getQuotes().observe(this, Observer { quotes ->
             val stringBuilder = StringBuilder()
-            quotes.forEach{ quote ->
+            quotes.forEach { quote ->
                 stringBuilder.append("$quote\n\n")
             }
             textView_quotes.text = stringBuilder.toString()
@@ -33,19 +33,21 @@ class QuoteActivity : AppCompatActivity() {
 
 
         button_add_quote.setOnClickListener {
+            if(validateEditText(editText_quote, "Write a quote") &&  validateEditText(editText_author, "Write the quote author name")){
             val quote = Quote(editText_quote.text.toString(), editText_author.text.toString())
             viewModel.addQuote(quote)
             editText_quote.setText("")
             editText_author.setText("")
+            }
         }
     }
 
-    private fun validateEditText(editText: EditText, errorMessage: String): Boolean{
+    private fun validateEditText(editText: EditText, errorMessage: String): Boolean {
         var textInput: String = editText.text.toString()
-        if(textInput.isEmpty()){
+        if (textInput.isEmpty()) {
             editText.setError(errorMessage)
             return false
-        }else {
+        } else {
             editText.setError(null);
             return true
         }
