@@ -1,7 +1,13 @@
 package com.example.mvvmbasicsresocoder.ui.quotes
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,11 +19,38 @@ import java.lang.StringBuilder
 
 class QuoteActivity : AppCompatActivity() {
 
+    private final var PREFS_NAME: String = "prefs"
+    private final var PREF_DARK_THEME: String = "dark_theme"
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        var preferences: SharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        var useDarkTheme: Boolean = preferences.getBoolean(PREF_DARK_THEME, false)
+
+        if (useDarkTheme){
+            setTheme(R.style.AppTheme_Dark)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quote)
         initializeUI()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        var menuInflater: MenuInflater = menuInflater
+        if(getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getBoolean(PREF_DARK_THEME,  false)){
+            menuInflater.inflate( R.menu.light_mode_button, menu)
+        } else {
+            menuInflater.inflate( R.menu.dark_mode_button, menu)
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        toggleTheme(!getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getBoolean(PREF_DARK_THEME,  false))
+        return true
+    }
+
 
     private fun initializeUI() {
         val factory = InjectorUtils.provideQuotesViewModelFactory()
@@ -51,6 +84,17 @@ class QuoteActivity : AppCompatActivity() {
             editText.setError(null);
             return true
         }
+    }
+
+    private fun toggleTheme(isDarkThemeActive: Boolean){
+        var editor: SharedPreferences.Editor = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
+        editor.putBoolean(PREF_DARK_THEME, isDarkThemeActive);
+        editor.apply()
+
+        var intent: Intent = getIntent()
+        finish();
+
+        startActivity(intent)
     }
 
 }
