@@ -9,7 +9,7 @@
   Quotes App - Android
 </h3>
 
-<p align="center">An Android application to start learning how to structure projects using MVVM. It was made by following Reso Coder Tutorial, I tried to improve the application challeging me to add new features to application.</p>
+<p align="center">An Android application to start learning how to structure projects using MVVM and Kodein library to dependency injection. It was made by following Reso Coder Tutorial, I tried to improve the application challeging me to add new features to application.</p>
 
 ## 📱 Features
 
