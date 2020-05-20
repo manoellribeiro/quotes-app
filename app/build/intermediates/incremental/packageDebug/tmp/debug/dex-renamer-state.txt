@@ -1,4 +1,4 @@
-#Wed May 13 17:25:50 BRT 2020
+#Tue May 19 22:14:04 BRT 2020
 base.0=C\:\\Users\\mano1\\Documents\\Programming\\Android\\mvvmbasicsresocoder\\app\\build\\intermediates\\dex\\debug\\out\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

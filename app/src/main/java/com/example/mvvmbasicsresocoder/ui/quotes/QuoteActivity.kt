@@ -12,15 +12,22 @@ import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.mvvmbasicsresocoder.R
-import com.example.mvvmbasicsresocoder.data.Quote
-import com.example.mvvmbasicsresocoder.utilities.InjectorUtils
+import com.example.mvvmbasicsresocoder.data.model.Quote
 import kotlinx.android.synthetic.main.activity_quote.*
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.generic.instance
 import java.lang.StringBuilder
 
-class QuoteActivity : AppCompatActivity() {
+class QuoteActivity : AppCompatActivity(), KodeinAware {
+
+    override val kodein by closestKodein()
 
     private final var PREFS_NAME: String = "prefs"
     private final var PREF_DARK_THEME: String = "dark_theme"
+
+    private val viewModelFactory: QuotesViewModelFactory by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -53,9 +60,13 @@ class QuoteActivity : AppCompatActivity() {
 
 
     private fun initializeUI() {
-        val factory = InjectorUtils.provideQuotesViewModelFactory()
-        val viewModel = ViewModelProvider(this, factory).get(QuotesViewModel::class.java)
 
+        // Use ViewModelProviders class to create / get already created QuotesViewModel
+        // for this view (activity)
+        val viewModel = ViewModelProvider(this, viewModelFactory).get(QuotesViewModel::class.java)
+
+        // Observing LiveData from the QuotesViewModel which in turn observes
+        // LiveData from the repository, which observes LiveData from the DAO
         viewModel.getQuotes().observe(this, Observer { quotes ->
             val stringBuilder = StringBuilder()
             quotes.forEach { quote ->
@@ -64,10 +75,13 @@ class QuoteActivity : AppCompatActivity() {
             textView_quotes.text = stringBuilder.toString()
         })
 
-
+        // When button is clicked, instantiate a Quote and add it to DB through the ViewModel
         button_add_quote.setOnClickListener {
             if(validateEditText(editText_quote, "Write a quote") &&  validateEditText(editText_author, "Write the quote author name")){
-            val quote = Quote(editText_quote.text.toString(), editText_author.text.toString())
+            val quote = Quote(
+                editText_quote.text.toString(),
+                editText_author.text.toString()
+            )
             viewModel.addQuote(quote)
             editText_quote.setText("")
             editText_author.setText("")
